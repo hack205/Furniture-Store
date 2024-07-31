@@ -53,7 +53,7 @@ class CustomerResource extends Resource
                     ->label(__('messages.customer.colony'))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextArea::make('address')
+                Forms\Components\Textarea::make('address')
                     ->label(__('messages.customer.address'))
                     ->columnSpan('full')
                     ->required()
