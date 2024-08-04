@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use App\Models\Customer;
-use App\OrderStatusEnum;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use function Laravel\Prompts\select;
@@ -34,7 +33,7 @@ class ImportOrders extends Command
 
         $jsonFiles = File::files($directory);
 
-        $filePath = select('Cúal es el archivo a importar?', $jsonFiles); 
+        $filePath = select('Cúal es el archivo a importar?', $jsonFiles);
 
         $jsonContents = file_get_contents($filePath);
 
@@ -44,7 +43,7 @@ class ImportOrders extends Command
             $this->error('El archivo JSON no tiene un formato válido.');
             return;
         }
-    
+
         $orders = $data['clieficha'];
         $totalOrders = count($orders);
         foreach ($orders as $key => $value) {
@@ -62,10 +61,9 @@ class ImportOrders extends Command
                     [
                         'number' => $value['clavef'],
                         'customer_id' => $customerId,
-                        'status' => OrderStatusEnum::PENDING->value
                     ]
                 );
-    
+
                 $status = $order->wasRecentlyCreated ? 'imported' : 'updated';
                 $row = $key + 1;
                 $this->info("{$row}/{$totalOrders} Order {$order->number} {$status}.");

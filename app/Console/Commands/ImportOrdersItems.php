@@ -6,7 +6,6 @@ use App\Models\Agent;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Payment;
-use App\OrderStatusEnum;
 use App\PaymentProviderEnum;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -37,7 +36,7 @@ class ImportOrdersItems extends Command
 
         $jsonFiles = File::files($directory);
 
-        $filePath = select('Cúal es el archivo a importar?', $jsonFiles); 
+        $filePath = select('Cúal es el archivo a importar?', $jsonFiles);
 
         $jsonContents = file_get_contents($filePath);
 
@@ -50,7 +49,7 @@ class ImportOrdersItems extends Command
 
         $items = $data['FICHA'];
         $totalItems = count($items);
-        
+
         foreach ($items as $key => $item) {
             $order = Order::where('number', $item['NOFICHA'])->first();
 
@@ -58,7 +57,6 @@ class ImportOrdersItems extends Command
 
                 // Order
                 $order->update([
-                    'status' => OrderStatusEnum::COMPLETED->value,
                     'created_at' => $item['FECHA'],
                     'total' => $item['totalmerc']
                 ]);

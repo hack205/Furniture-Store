@@ -60,7 +60,6 @@ return [
         'number'    => 'Número',
         'customer'  => 'Cliente',
         'agent'     => 'Agente',
-        'status'    => 'Estado',
         'notes'     => 'Notas',
 
         'product'   => 'Producto',
