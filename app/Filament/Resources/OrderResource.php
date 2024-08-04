@@ -8,7 +8,6 @@ use App\Models\Order;
 use Filament\Forms\Set;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
-use App\OrderStatusEnum;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,9 +47,7 @@ class OrderResource extends Resource
                             ->label(__('messages.order.order_details'))
                             ->schema([
                                 Forms\Components\TextInput::make('number')
-                                    ->default('OR-' . random_int(1000, 9999))
                                     ->label(__('messages.order.number'))
-                                    ->disabled()
                                     ->dehydrated()
                                     ->required(),
                                 Forms\Components\Select::make('customer_id')
@@ -64,11 +61,6 @@ class OrderResource extends Resource
                                     ->searchable(),
                                 Forms\Components\DateTimePicker::make('archived_at')
                                     ->label(__('messages.order.archived_at')),
-                                Forms\Components\ToggleButtons::make('status')
-                                    ->label(__('messages.order.status'))
-                                    ->required()
-                                    ->inline()
-                                    ->options(OrderStatusEnum::class),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
                                     ->columnSpanFull(),
@@ -155,11 +147,6 @@ class OrderResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label(__('messages.order.status'))
-                    ->sortable()
-                    ->searchable()
-                    ->badge(),
                 Tables\Columns\IconColumn::make('is_settled')
                     ->label(__('messages.order.is_settled'))
                     ->boolean()
@@ -190,8 +177,6 @@ class OrderResource extends Resource
                     ->date(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options(OrderStatusEnum::class),
                 Tables\Filters\SelectFilter::make('settled_status')
                     ->label('Order Status')
                     ->options([

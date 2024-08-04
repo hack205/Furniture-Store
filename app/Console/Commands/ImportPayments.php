@@ -16,7 +16,7 @@ class ImportPayments extends Command
      *
      * @var string
      */
-    protected $signature = 'import:payments';
+    protected $signature = 'import:orders-payments';
 
     /**
      * The console command description.
@@ -34,7 +34,7 @@ class ImportPayments extends Command
 
         $jsonFiles = File::files($directory);
 
-        $filePath = select('Cúal es el archivo a importar?', $jsonFiles); 
+        $filePath = select('Cúal es el archivo a importar?', $jsonFiles);
 
         $jsonContents = file_get_contents($filePath);
 
@@ -68,7 +68,7 @@ class ImportPayments extends Command
                 $row = $key + 1;
                 $this->info("{$row}/{$totalPayments} Payment {$payment->amount} {$status}.");
             }
-            
+
         }
 
     }
