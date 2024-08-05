@@ -55,10 +55,8 @@ class OrderResource extends Resource
                                     ->label(__('messages.order.customer'))
                                     ->searchable()
                                     ->required(),
-                                Forms\Components\Select::make('agent_id')
-                                    ->relationship('agent', 'name')
-                                    ->label(__('messages.order.agent'))
-                                    ->searchable(),
+                                Forms\Components\TextInput::make('agent')
+                                    ->label(__('messages.order.agent')),
                                 Forms\Components\DateTimePicker::make('archived_at')
                                     ->label(__('messages.order.archived_at')),
                                 Forms\Components\MarkdownEditor::make('notes')

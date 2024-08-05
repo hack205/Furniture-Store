@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Agent;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Payment;
@@ -58,7 +57,8 @@ class ImportOrdersItems extends Command
                 // Order
                 $order->update([
                     'created_at' => $item['FECHA'],
-                    'total' => $item['totalmerc']
+                    'total' => $item['totalmerc'],
+                    'agent' => $item['AGENTE'],
                 ]);
 
                 // Items
@@ -92,18 +92,6 @@ class ImportOrdersItems extends Command
                     );
                 }
 
-                if($item['AGENTE']){
-                    $agent = Agent::firstOrCreate([
-                        'name' => $item['AGENTE'],
-                    ],[
-                        'name' => $item['AGENTE'],
-                        'created_at' => $item['FECHA']
-                    ]);
-
-                    $order->update([
-                        'agent_id' => $agent->id
-                    ]);
-                }
 
                 $status = $itemDB->wasRecentlyCreated ? 'imported' : 'updated';
                 $row = $key + 1;
