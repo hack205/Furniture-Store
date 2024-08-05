@@ -63,7 +63,7 @@ class PaymentsRelationManager extends RelationManager
             Forms\Components\TextInput::make('amount')
                 ->label(__('messages.payment.amount'))
                 ->required()
-                    ->numeric(),
+                ->numeric(),
             Forms\Components\ToggleButtons::make('method')
                     ->label(__('messages.payment.method'))
                     ->required()
@@ -88,9 +88,11 @@ class PaymentsRelationManager extends RelationManager
                     ->label(__('messages.payment.amount'))
                     ->sortable()
                     ->searchable()
-                    ->money()
+                    ->money('MXN')
                     ->summarize([
-                        Tables\Columns\Summarizers\Sum::make()->money()->label('Amount')
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('MXN')
+                            ->label(__('messages.payment.amount'))
                     ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('messages.payment.created_at'))

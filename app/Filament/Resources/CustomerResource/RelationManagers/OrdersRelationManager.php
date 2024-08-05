@@ -26,11 +26,6 @@ class OrdersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('number')
                     ->label(__('messages.order.number')),
-                Tables\Columns\TextColumn::make('status')
-                    ->label(__('messages.order.status'))
-                    ->sortable()
-                    ->searchable()
-                    ->badge(),
                 Tables\Columns\TextColumn::make('total')
                     ->label(__('messages.order.total'))
                     ->sortable()
