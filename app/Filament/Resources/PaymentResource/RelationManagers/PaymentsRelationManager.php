@@ -61,7 +61,7 @@ class PaymentsRelationManager extends RelationManager
                 ->required()
                 ->numeric(),
 
-            Forms\Components\DatePicker::make('create_at')
+            Forms\Components\DatePicker::make('created_at')
                     ->label(__('messages.payment.created_at'))
                     ->default(now())
                     ->required(),
