@@ -61,6 +61,7 @@ return [
         'customer'  => 'Cliente',
         'agent'     => 'Agente',
         'notes'     => 'Notas',
+        'print'     => 'Imprimir',
 
         'product'   => 'Producto',
         'qty'       => 'Cantidad',
