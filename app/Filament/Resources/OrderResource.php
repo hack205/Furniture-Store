@@ -75,6 +75,15 @@ class OrderResource extends Resource
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('messages.order.update_at'))
                                     ->content(fn(Order $record): ?string => $record->updated_at?->diffForHumans()),
+
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('id')
+                                        ->icon('heroicon-m-clipboard')
+                                        ->label(__('messages.order.print'))
+                                        ->url(fn(?Order $record) => route('print.form', $record->id))
+                                        ->openUrlInNewTab()
+                                    ]),
+
                             ])
                             ->columnSpan(['lg' => 3])
                             ->hidden(fn(?Order $record) => $record === null),
