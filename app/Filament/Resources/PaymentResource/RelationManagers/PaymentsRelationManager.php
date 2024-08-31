@@ -56,20 +56,23 @@ class PaymentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('reference')
-                    ->label(__('messages.payment.reference'))
-                    ->required()
-                    ->maxLength(255),
             Forms\Components\TextInput::make('amount')
                 ->label(__('messages.payment.amount'))
                 ->required()
                 ->numeric(),
+
+            Forms\Components\DatePicker::make('create_at')
+                    ->label(__('messages.payment.created_at'))
+                    ->default(now())
+                    ->required(),
+
             Forms\Components\ToggleButtons::make('method')
                     ->label(__('messages.payment.method'))
                     ->required()
                     ->inline()
-                    ->options(PaymentProviderEnum::class)
+                    ->options(PaymentProviderEnum::class),
             ]);
+
     }
 
     public function table(Table $table): Table
@@ -77,8 +80,6 @@ class PaymentsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('payment')
             ->columns([
-                Tables\Columns\TextColumn::make('reference')
-                    ->label(__('messages.payment.reference')),
                 Tables\Columns\TextColumn::make('method')
                     ->label(__('messages.payment.method'))
                     ->sortable()
