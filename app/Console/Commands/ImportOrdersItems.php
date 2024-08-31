@@ -56,25 +56,13 @@ class ImportOrdersItems extends Command
 
                 // Order
                 $order->update([
-                    'created_at' => $item['FECHA'],
-                    'total' => $item['totalmerc'],
                     'agent' => $item['AGENTE'],
+                    'total' => $item['totalmerc'],
+                    'created_at' => $item['FECHA'],
+                    'product' => $item['MERCANCIA'],
                 ]);
 
-                // Items
-                $itemDB = Item::firstOrCreate(
-                    [
-                        'order_id' => $order->id,
-                        'name' => $item['MERCANCIA'],
-                    ]
-                    ,
-                    [
-                        'name' => $item['MERCANCIA'],
-                        'qty' => 1,
-                        'unit_price' => $item['totalmerc'],
-                        'total' => $item['totalmerc'],
-                    ]
-                );
+
 
                 // Payment
                 if($item['ANTICIPO'] > 0){
@@ -93,7 +81,7 @@ class ImportOrdersItems extends Command
                 }
 
 
-                $status = $itemDB->wasRecentlyCreated ? 'imported' : 'updated';
+                $status = $order->wasRecentlyCreated ? 'imported' : 'updated';
                 $row = $key + 1;
                 $this->info("{$row}/{$totalItems} Item {$order->number} {$status}.");
             }

@@ -57,8 +57,6 @@ class OrderResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('agent')
                                     ->label(__('messages.order.agent')),
-                                Forms\Components\DateTimePicker::make('archived_at')
-                                    ->label(__('messages.order.archived_at')),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
                                     ->columnSpanFull(),
@@ -76,6 +74,9 @@ class OrderResource extends Resource
                                     ->label(__('messages.order.update_at'))
                                     ->content(fn(Order $record): ?string => $record->updated_at?->diffForHumans()),
 
+                                Forms\Components\DateTimePicker::make('archived_at')
+                                    ->label(__('messages.order.archived_at')),
+
                                 Forms\Components\Actions::make([
                                     Forms\Components\Actions\Action::make('id')
                                         ->icon('heroicon-m-clipboard')
@@ -91,50 +92,16 @@ class OrderResource extends Resource
                     ->columns(12)
                     ->columnSpanFull(),
 
-                Forms\Components\Section::make(__('messages.order.order_items'))
+                Forms\Components\Section::make(__('messages.order.product'))
                     ->schema([
-                        Forms\Components\Repeater::make('items')
-                            ->label(__('messages.order.order_items'))
-                            ->required()
-                            ->reorderableWithButtons()
-                            ->relationship('items')
-                            ->reorderable(true)
-                            ->live()
-                            ->afterStateUpdated(fn($get, $set, $state) => self::updateTotals($get, $set))
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('messages.order.product'))
-                                    ->live()
-                                    ->afterStateUpdated(fn($get, $set, ?string $state) => self::updateItem($get, $set))
-                                    ->required(),
-                                Forms\Components\TextInput::make('qty')
-                                    ->label(__('messages.order.qty'))
-                                    ->numeric()
-                                    ->default(1)
-                                    ->required()
-                                    ->live()
-                                    ->afterStateUpdated(fn($get, $set, ?string $state) => self::updateItem($get, $set)),
-                                Forms\Components\TextInput::make('unit_price')
-                                    ->label(__('messages.order.unit_price'))
-                                    ->default(0)
-                                    ->numeric()
-                                    ->live()
-                                    ->required()
-                                    ->afterStateUpdated(fn($get, $set, ?string $state) => self::updateItem($get, $set)),
-                                Forms\Components\TextInput::make('total')
-                                    ->label('Total')
-                                    ->disabled()
-                                    ->live()
-                            ])->columns(4)
-                    ]),
-
-                Forms\Components\Section::make('Total')
-                    ->schema([
+                        Forms\Components\TextInput::make('product')
+                            ->label(__('messages.order.product'))
+                            ->required(),
                         Forms\Components\TextInput::make('total')
-                            ->label('Total')
+                            ->label(__('messages.order.total'))
                             ->live()
                             ->columnStart('sm')
-                            ->disabled()
+                            ->required()
                             ->prefix('$')
                     ]),
             ]);
@@ -261,7 +228,7 @@ class OrderResource extends Resource
         foreach ($items as $item)
             $total_price += $item['unit_price'] * $item['qty'];
 
-        $set('total_price', $total_price);
+        $set('total', $total_price);
     }
 
     public static function getPages(): array
