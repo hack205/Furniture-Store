@@ -1,26 +1,21 @@
 <?php
 
 namespace App\Filament\Reports;
-
-use App\Helpers\Dates;
-use App\Models\Order;
-use Filament\Forms\Form;
+use App\Models\Payment;
 use EightyNine\Reports\Report;
 use EightyNine\Reports\Components\Body;
 use EightyNine\Reports\Components\Footer;
-use EightyNine\Reports\Components\Header;
-use EightyNine\Reports\Components\Image;
 use EightyNine\Reports\Components\Text;
+use App\Helpers\Dates;
+use EightyNine\Reports\Components\Header;
+use Filament\Forms\Form;
 use EightyNine\Reports\Components\VerticalSpace;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
-class OrdersReport extends Report
+class PaymentsReport extends Report
 {
     public ?string $heading = "Reporte";
-
-    protected static ?string $model = Order::class;
-
-    // public ?string $subHeading = "A great report";
+    protected static ?string $model = Payment::class;
 
     public function header(Header $header): Header
     {
@@ -47,48 +42,50 @@ class OrdersReport extends Report
             ->schema([
                 Body\Layout\BodyColumn::make()
                     ->schema([
-                        Text::make(__('messages.reports.orders_report'))
+                        Text::make(__('messages.reports.payments_report'))
                             ->fontXl()
                             ->fontBold()
                             ->primary(),
                         Body\Table::make()
                             ->columns([
-                                Body\TextColumn::make("number")
-                                    ->label(__('messages.order.number')),
-                                Body\TextColumn::make('customer')
-                                    ->label(__('messages.customer.name')),
-                                Body\TextColumn::make("product")
-                                    ->label(__('messages.order.product')),
-                                Body\TextColumn::make("created_at")
-                                    ->label(__('messages.order.created_at'))
-                                    ->date(),
-                                Body\TextColumn::make("total")
-                                    ->label(__('messages.order.total'))
+                                Body\TextColumn::make("customer_name")
+                                ->label(__('messages.customer.customer')),
+                                Body\TextColumn::make("order_id")
+                                ->label(__('messages.order.order')),
+                                Body\TextColumn::make("amount")
+                                    ->label(__('messages.payment.amount'))
                                     ->money('MXN'),
-
+                                Body\TextColumn::make("method")
+                                    ->label(__('messages.payment.method')),
                             ])
                             ->data(
                                 function (?array $filters) {
-
                                     $search = $filters['search'] ?? null;
                                     [$from, $to] = Dates::getCarbonInstancesFromDateString($filters['created_at'] ?? null);
-
-                                    $query = Order::with('customer')
+                                
+                                    $query = Payment::with('order.customer')
                                         ->when($from, fn($query) => $query->whereDate('created_at', '>=', $from))
                                         ->when($to, fn($query) => $query->whereDate('created_at', '<=', $to))
-                                        ->when($search, fn($query) => $query->where('product', 'like', "%{$search}%"))
+                                        ->when($search, function ($query) use ($search) {
+                                            $query->whereHas('order.customer', function ($query) use ($search) {
+                                                $query->where('name', 'like', "%{$search}%");
+                                            })
+                                            ->orWhere('method', 'like', "%{$search}%");
+                                        })
                                         ->take(100)
                                         ->get()
                                         ->map(function ($row){
                                             return [
                                                 'created_at' => $row->created_at,
-                                                'total' => $row->total,
-                                                'number' => $row->number,
-                                                'product'=> $row->product,
-                                                'customer' => $row->customer->name
+                                                'amount' => $row->amount,
+                                                'method' => $row->method,
+                                                'reference' => $row->reference,
+                                                'order_number' => $row->order->number,
+                                                'order_id' => $row->order->id,
+                                                'customer_name' => $row->order->customer->name,
                                             ];
                                         });
-
+                                
                                     return $query;
                                 }
                             ),
@@ -111,11 +108,12 @@ class OrdersReport extends Report
         return $form
             ->schema([
                 \Filament\Forms\Components\TextInput::make('search')
-                    ->placeholder(__('messages.order.product')),
+                    ->placeholder(__('Cliente')),
 
                 DateRangePicker::make("created_at")
-                    ->label(__('messages.order.created_at'))
+                    ->label(__('messages.payment.created_at'))
                     ->placeholder(__('messages.reports.select_date_range')),
             ]);
     }
 }
+

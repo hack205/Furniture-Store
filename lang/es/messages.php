@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'shop' => 'Comercio',
+    'shop' => 'Mueblería Guerrero',
 
     // Navigation
 
@@ -98,5 +98,14 @@ return [
         // Payment Types Enum
         'efectivo'   => 'Efectivo',
         'transferencia'=> 'Transferencia',
+
+    ],
+
+    //Reports
+    'reports' => [
+        'report' => 'Reporte',
+        'payments_report' => 'Reporte de Pagos',
+        'orders_report' => 'Reporte de Ordenes',
+        'select_date_range' => 'Rango de fechas'
     ]
 ];

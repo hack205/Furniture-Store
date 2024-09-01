@@ -11,6 +11,15 @@ class Payment extends Model
     use HasFactory;
 
     protected $casts = [
-        'method' =>  PaymentProviderEnum::class,
+        'method' => PaymentProviderEnum::class,
     ];
+
+    /**
+     * Define the relationship between Payment and Order.
+     * Each payment belongs to one order.
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }
