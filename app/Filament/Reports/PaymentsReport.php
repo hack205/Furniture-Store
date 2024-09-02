@@ -64,16 +64,21 @@ class PaymentsReport extends Report
                             ->data(
                                 function (?array $filters) {
                                     $search = $filters['search'] ?? null;
+                                    $order = $filters['order'] ?? null;
                                     [$from, $to] = Dates::getCarbonInstancesFromDateString($filters['created_at'] ?? null);
 
-                                    $query = Payment::with('order.customer')
+                                    $query = Payment::with('order')
                                         ->when($from, fn($query) => $query->whereDate('created_at', '>=', $from))
                                         ->when($to, fn($query) => $query->whereDate('created_at', '<=', $to))
                                         ->when($search, function ($query) use ($search) {
                                             $query->whereHas('order.customer', function ($query) use ($search) {
                                                 $query->where('name', 'like', "%{$search}%");
-                                            })
-                                            ->orWhere('method', 'like', "%{$search}%");
+                                            });
+                                        })
+                                        ->when($order, function ($query) use ($order) {
+                                            $query->whereHas('order', function ($query) use ($order) {
+                                                $query->where('number', 'like', "%{$order}%");
+                                            });
                                         })
                                         ->take(100)
                                         ->get()
@@ -112,7 +117,12 @@ class PaymentsReport extends Report
         return $form
             ->schema([
                 \Filament\Forms\Components\TextInput::make('search')
-                    ->placeholder(__('Cliente')),
+                    ->label(__('messages.customers'))
+                    ->placeholder(__('messages.customers')),
+
+                \Filament\Forms\Components\TextInput::make('order')
+                    ->label(__('messages.orders'))
+                    ->placeholder(__('messages.orders')),
 
                 DateRangePicker::make("created_at")
                     ->label(__('messages.payment.created_at'))

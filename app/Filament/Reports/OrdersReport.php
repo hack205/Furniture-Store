@@ -68,13 +68,21 @@ class OrdersReport extends Report
                             ->data(
                                 function (?array $filters) {
 
-                                    $search = $filters['search'] ?? null;
+                                    $customer   = $filters['customer'] ?? null;
+                                    $product    = $filters['product'] ?? null;
+                                    $order      = $filters['order'] ?? null;
                                     [$from, $to] = Dates::getCarbonInstancesFromDateString($filters['created_at'] ?? null);
 
                                     $query = Order::with('customer')
                                         ->when($from, fn($query) => $query->whereDate('created_at', '>=', $from))
                                         ->when($to, fn($query) => $query->whereDate('created_at', '<=', $to))
-                                        ->when($search, fn($query) => $query->where('product', 'like', "%{$search}%"))
+                                        ->when($product, fn($query) => $query->where('product', 'like', "%{$product}%"))
+                                        ->when($order, fn($query) => $query->where('number', 'like', "%{$order}%"))
+                                        ->when($customer, function ($query) use ($customer) {
+                                            $query->whereHas('customer', function ($query) use ($customer) {
+                                                $query->where('name', 'like', "%{$customer}%");
+                                            });
+                                        })
                                         ->take(100)
                                         ->get()
                                         ->map(function ($row){
@@ -108,8 +116,17 @@ class OrdersReport extends Report
     {
         return $form
             ->schema([
-                \Filament\Forms\Components\TextInput::make('search')
+                \Filament\Forms\Components\TextInput::make('customer')
+                    ->label(__('messages.customers'))
+                    ->placeholder(__('messages.customers')),
+
+                \Filament\Forms\Components\TextInput::make('product')
+                    ->label(__('messages.order.product'))
                     ->placeholder(__('messages.order.product')),
+
+                \Filament\Forms\Components\TextInput::make('order')
+                    ->label(__('messages.orders'))
+                    ->placeholder(__('messages.orders')),
 
                 DateRangePicker::make("created_at")
                     ->label(__('messages.order.created_at'))
