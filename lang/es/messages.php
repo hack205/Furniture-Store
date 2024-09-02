@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'shop' => 'Mueblería Guerrero',
+    'shop' => config('app.name'),
 
     // Navigation
 

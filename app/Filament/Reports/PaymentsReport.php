@@ -49,12 +49,15 @@ class PaymentsReport extends Report
                         Body\Table::make()
                             ->columns([
                                 Body\TextColumn::make("customer_name")
-                                ->label(__('messages.customer.customer')),
-                                Body\TextColumn::make("order_id")
-                                ->label(__('messages.order.order')),
+                                    ->label(__('messages.customer.customer')),
+                                Body\TextColumn::make("number")
+                                    ->label(__('messages.order.order')),
                                 Body\TextColumn::make("amount")
                                     ->label(__('messages.payment.amount'))
                                     ->money('MXN'),
+                                Body\TextColumn::make("created_at")
+                                    ->label(__('messages.order.created_at'))
+                                    ->date(),
                                 Body\TextColumn::make("method")
                                     ->label(__('messages.payment.method')),
                             ])
@@ -62,7 +65,7 @@ class PaymentsReport extends Report
                                 function (?array $filters) {
                                     $search = $filters['search'] ?? null;
                                     [$from, $to] = Dates::getCarbonInstancesFromDateString($filters['created_at'] ?? null);
-                                
+
                                     $query = Payment::with('order.customer')
                                         ->when($from, fn($query) => $query->whereDate('created_at', '>=', $from))
                                         ->when($to, fn($query) => $query->whereDate('created_at', '<=', $to))
@@ -82,10 +85,11 @@ class PaymentsReport extends Report
                                                 'reference' => $row->reference,
                                                 'order_number' => $row->order->number,
                                                 'order_id' => $row->order->id,
+                                                'number' => $row->order->number,
                                                 'customer_name' => $row->order->customer->name,
                                             ];
                                         });
-                                
+
                                     return $query;
                                 }
                             ),

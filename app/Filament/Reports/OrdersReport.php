@@ -6,11 +6,10 @@ use App\Helpers\Dates;
 use App\Models\Order;
 use Filament\Forms\Form;
 use EightyNine\Reports\Report;
+use EightyNine\Reports\Components\Text;
 use EightyNine\Reports\Components\Body;
 use EightyNine\Reports\Components\Footer;
 use EightyNine\Reports\Components\Header;
-use EightyNine\Reports\Components\Image;
-use EightyNine\Reports\Components\Text;
 use EightyNine\Reports\Components\VerticalSpace;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
@@ -20,7 +19,6 @@ class OrdersReport extends Report
 
     protected static ?string $model = Order::class;
 
-    // public ?string $subHeading = "A great report";
 
     public function header(Header $header): Header
     {
