@@ -57,6 +57,9 @@ class OrderResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('agent')
                                     ->label(__('messages.order.agent')),
+                                Forms\Components\TextInput::make('route')
+                                    ->required()
+                                    ->label(__('messages.order.route')),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
                                     ->columnSpanFull(),
@@ -189,6 +192,7 @@ class OrderResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    //TODO CUSTOM O ALGO ASÍ ARCHIVAR
                 ]),
             ])
             ->bulkActions([
