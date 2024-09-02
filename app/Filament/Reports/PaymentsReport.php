@@ -16,6 +16,7 @@ class PaymentsReport extends Report
 {
     public ?string $heading = "Reporte";
     protected static ?string $model = Payment::class;
+    protected static ?string $navigationLabel = 'Reporte de Pagos';
 
     public function header(Header $header): Header
     {
@@ -117,12 +118,17 @@ class PaymentsReport extends Report
         return $form
             ->schema([
                 \Filament\Forms\Components\TextInput::make('search')
+<<<<<<< HEAD
                     ->label(__('messages.customers'))
                     ->placeholder(__('messages.customers')),
 
                 \Filament\Forms\Components\TextInput::make('order')
                     ->label(__('messages.orders'))
                     ->placeholder(__('messages.orders')),
+=======
+                    ->label(__('messages.reports.search_customer'))
+                    ->placeholder(__('Cliente')),
+>>>>>>> 05d4f87 (Se cambiaron etiquetas de texto, de ingles a español, en reportes.)
 
                 DateRangePicker::make("created_at")
                     ->label(__('messages.payment.created_at'))

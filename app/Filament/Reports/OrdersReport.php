@@ -18,6 +18,7 @@ class OrdersReport extends Report
     public ?string $heading = "Reporte";
 
     protected static ?string $model = Order::class;
+    protected static ?string $navigationLabel = 'Reporte de Ordenes';
 
 
     public function header(Header $header): Header
@@ -116,12 +117,17 @@ class OrdersReport extends Report
     {
         return $form
             ->schema([
+<<<<<<< HEAD
                 \Filament\Forms\Components\TextInput::make('customer')
                     ->label(__('messages.customers'))
                     ->placeholder(__('messages.customers')),
 
                 \Filament\Forms\Components\TextInput::make('product')
                     ->label(__('messages.order.product'))
+=======
+                \Filament\Forms\Components\TextInput::make('search')
+                    ->label(__('messages.reports.search_product'))
+>>>>>>> 05d4f87 (Se cambiaron etiquetas de texto, de ingles a español, en reportes.)
                     ->placeholder(__('messages.order.product')),
 
                 \Filament\Forms\Components\TextInput::make('order')
