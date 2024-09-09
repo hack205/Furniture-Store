@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'shop' => 'Comercio',
+    'shop' => config('app.name'),
 
     // Navigation
 
@@ -60,6 +60,7 @@ return [
         'number'    => 'Número',
         'customer'  => 'Cliente',
         'agent'     => 'Agente',
+        'route'     => 'Ruta',
         'notes'     => 'Notas',
         'print'     => 'Imprimir',
 
@@ -98,5 +99,16 @@ return [
         // Payment Types Enum
         'efectivo'   => 'Efectivo',
         'transferencia'=> 'Transferencia',
+
+    ],
+
+    //Reports
+    'reports' => [
+        'report' => 'Reporte',
+        'payments_report' => 'Reporte de Pagos',
+        'orders_report' => 'Reporte de Ordenes',
+        'select_date_range' => 'Rango de fechas',
+        'search_product' => 'Buscar producto',
+        'search_customer' => 'Buscar Cliente',
     ]
 ];

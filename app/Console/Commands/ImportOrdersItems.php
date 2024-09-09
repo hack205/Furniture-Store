@@ -60,6 +60,7 @@ class ImportOrdersItems extends Command
                     'total' => $item['totalmerc'],
                     'created_at' => $item['FECHA'],
                     'product' => $item['MERCANCIA'],
+                    'route' => $item['norutf'],
                 ]);
 
 

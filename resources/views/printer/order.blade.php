@@ -59,15 +59,11 @@
     </tr>
     <tr>
         <td>
-            @foreach ($order->items as $item)
-                {{ $item->qty }} - {{ $item->name }}
-            @endforeach
+            {{ $order->product }}
         </td>
 
         <td>
-            @foreach ($order->items as $item)
-                {{ $item->qty }} - {{ $item->name }}
-            @endforeach
+            {{ $order->product }}
         </td>
     </tr>
     <tr>
