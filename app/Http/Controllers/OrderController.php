@@ -12,4 +12,10 @@ class OrderController extends Controller
 
         return view('printer.order', compact('order'));
     }
+    public function printOrderPayments($id)
+    {
+        $order = Order::with(['customer', 'payments'])->findOrFail($id);
+
+        return view('printer.orderpayments', compact('order'));
+    }
 }

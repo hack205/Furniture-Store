@@ -3,136 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{$order->customer->name}} | {{$order->number}}</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        @page {
+            margin: 0; 
+            size: 21.59cm 27.94cm; 
         }
-        th, td {
-            font-size: 10px;
-            border: 1px solid black;
-        }
-
-        .header-order {
-            padding-right: 20px;
-            text-align: right;
-        }
-        .header-date {
-            text-align: right;
+        @media print {
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                width: 100%;
+                height: 100%; 
+            }
+            .field {
+                position: absolute;
+                font-size: 9pt;
+            }
+            .no-1 {
+                top: 4cm;
+                left: 7.2cm;
+            }
+            .no-2 {
+                top: 4cm;
+                left: 16.6cm;
+            }
+            .a-1 {
+                top: 4.4cm;
+                left: 5.5cm;
+            }
+            .a-2 {
+                top: 4.4cm;
+                left: 14.5cm;
+            }
+            .de-1 {
+                top: 4.4cm;
+                left: 6.5cm;
+            }
+            .de-2 {
+                top: 4.4cm;
+                left: 15.5cm;
+            }
+            .del-1 {
+                top: 4.4cm;
+                left: 7.5cm;
+            }
+            .del-2 {
+                top: 4.4cm;
+                left: 16.5cm;
+            }
+            .nombre-1 {
+                top: 5.2cm;
+                left: 3cm;
+            }
+            .nombre-2 {
+                top: 5.2cm;
+                left: 12cm;
+            }
+            .direccion-1 {
+                top: 5.6cm;
+                left: 3cm;
+            }
+            .direccion-2 {
+                top: 5.6cm;
+                left: 12cm;
+            }
+            .entre-1 {
+                top: 6.2cm;
+                left: 3cm;
+            }
+            .entre-2 {
+                top: 6.2cm;
+                left: 12cm;
+            }
+            .colonia-1 {
+                top: 6.6cm;
+                left: 3cm;
+            }
+            .colonia-2 {
+                top: 6.6cm;
+                left: 12cm;
+            }
+            .ciudad-1 {
+                top: 7cm;
+                left: 3cm;
+            }
+            .ciudad-2 {
+                top: 7cm;
+                left: 12cm;
+            }
+            .mercancia-1 {
+                top: 7.4cm;
+                left: 3cm;
+            }
+            .mercancia-2 {
+                top: 7.4cm;
+                left: 12cm;
+            }
+            .total-1 {
+                top: 8.3cm;
+                left: 7cm;
+            }
+            .total-2 {
+                top: 8.3cm;
+                left: 16cm;
+            }
+            .condiciones-pago-1 {
+                top: 8.6cm;
+                left: 1cm;
+            }
+            .condiciones-pago-2 {
+                top: 8.6cm;
+                left: 10cm;
+            }
+            .anticipo-1 {
+                top: 8.6cm;
+                left: 7cm;
+            }
+            .anticipo-2 {
+                top: 8.6cm;
+                left: 16cm;
+            }
+            .saldo-1 {
+                top: 9cm;
+                left: 7cm;
+            }
+            .saldo-2 {
+                top: 9cm;
+                left: 16cm;
+            }
         }
     </style>
 </head>
-<body>
-<table id="dataTable">
-    <thead>
-    <tr>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-    </tr>
-    <tr>
-        <th class="header-order">{{$order->number}}</th>
-        <th class="header-order">{{$order->number}}</th>
-    </tr>
-    <tr>
-        <th class="header-date">{{ $order->created_at->translatedFormat('d') }}&emsp;&emsp;{{ $order->created_at->translatedFormat('F') }}&emsp;&emsp;{{ $order->created_at->translatedFormat('Y') }}</th>
-        <th class="header-date">{{ $order->created_at->translatedFormat('d') }}&emsp;&emsp;{{ $order->created_at->translatedFormat('F') }}&emsp;&emsp;{{ $order->created_at->translatedFormat('Y') }}</th>
-    </tr>
-    </thead>
-    <tbody>
+<body id="printableArea">
 
-    <tr>
-        <td>{{$order->customer->name}}</td>
-        <td>{{$order->customer->name}}</td>
-    </tr>
-    <tr>
-        <td>{{$order->customer->address}}</td>
-        <td>{{$order->customer->address}}</td>
-    </tr>
-    <tr>
-        <td>{{$order->customer->colony}}</td>
-        <td>{{$order->customer->colony}}</td>
-    </tr>
-    <tr>
-        <td>{{$order->customer->city}}</td>
-        <td>{{$order->customer->city}}</td>
-    </tr>
-    <tr>
-        <td>
-            {{ $order->product }}
-        </td>
+    <div class="field no-1">{{ $order->number }}</div>
+    <div class="field no-2">{{ $order->number }}</div>
 
-        <td>
-            {{ $order->product }}
-        </td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <td>5</td>
-        <td>6</td>
-    </tr>
-    <tr>
-        <td>7</td>
-        <td>8</td>
-    </tr>
-    <tr>
-        <td>9</td>
-        <td>10</td>
-    </tr>
-    <tr>
-        <td>11</td>
-        <td>12</td>
-    </tr>
-    <tr>
-        <td>13</td>
-        <td>14</td>
-    </tr>
+    <div class="field a-1">{{ $order->created_at->format('d') }}</div>
+    <div class="field a-2">{{ $order->created_at->format('d') }}</div>
 
-    <tr>
-        <td>15</td>
-        <td>16</td>
-    </tr>
-    <tr>
-        <td>17</td>
-        <td>18</td>
-    </tr>
-    <tr>
-        <td>19</td>
-        <td>20</td>
-    </tr>
-    <tr>
-        <td>21</td>
-        <td>22</td>
-    </tr>
-    <tr>
-        <td>22</td>
-        <td>23</td>
-    </tr>
-    <tr>
-        <td>24</td>
-        <td>25</td>
-    </tr>
+    <div class="field de-1">{{ $order->created_at->format('m') }}</div>
+    <div class="field de-2">{{ $order->created_at->format('m') }}</div>
 
-    </tbody>
-</table>
+    <div class="field del-1">{{ $order->created_at->format('Y') }}</div>
+    <div class="field del-2">{{ $order->created_at->format('Y') }}</div>
+
+    <div class="field nombre-1">{{ $order->customer->name }}</div>
+    <div class="field nombre-2">{{ $order->customer->name }}</div>
+
+    <div class="field direccion-1">{{ $order->customer->address }}</div>
+    <div class="field direccion-2">{{ $order->customer->address }}</div>
+
+    <div class="field entre-1">{{ $order->customer->between_streets }}</div>
+    <div class="field entre-2">{{ $order->customer->between_streets }}</div>
+
+    <div class="field colonia-1">{{ $order->customer->colony }}</div>
+    <div class="field colonia-2">{{ $order->customer->colony }}</div>
+
+    <div class="field ciudad-1">{{ $order->customer->city }}</div>
+    <div class="field ciudad-2">{{ $order->customer->city }}</div>
+
+    <div class="field mercancia-1">{{ $order->product }}</div>
+    <div class="field mercancia-2">{{ $order->product }}</div>
+
+    <div class="field total-1">{{ number_format($order->total, 2) }}</div>
+    <div class="field total-2">{{ number_format($order->total, 2) }}</div>
+
+    <div class="field condiciones-pago-1">{{ $order->payment_conditions }}</div>
+    <div class="field condiciones-pago-2">{{ $order->payment_conditions }}</div>
+
+    <div class="field anticipo-1">{{ number_format($order->payments->first()->amount ?? 0, 2) }}</div>
+    <div class="field anticipo-2">{{ number_format($order->payments->first()->amount ?? 0, 2) }}</div>
+
+    @php
+        $totalPaid = $order->payments->sum('amount');
+        $remainingAmount = $order->total - $totalPaid;
+    @endphp
+    <div class="field saldo-1">{{ number_format($remainingAmount, 2) }}</div>
+    <div class="field saldo-2">{{ number_format($remainingAmount, 2) }}</div>
+
+</body>
 
 <script>
-    function printTable() {
-        var printContents = document.getElementById('dataTable').outerHTML;
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
+    function printAndClose() {
         window.print();
-        document.body.innerHTML = originalContents;
     }
-    printTable()
+    window.onload = printAndClose;
+    window.onafterprint = function() {
+        window.close();
+    };
 </script>
-</body>
 </html>

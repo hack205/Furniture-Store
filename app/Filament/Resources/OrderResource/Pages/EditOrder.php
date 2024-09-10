@@ -13,6 +13,13 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('imprimir_pagos')
+                ->label('Imprimir Pagos')
+                ->button()
+                ->color('gray')
+                ->icon('heroicon-o-printer')
+                ->url(fn($record) => route('print.orderpayments', $record->id))
+                ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];
     }
