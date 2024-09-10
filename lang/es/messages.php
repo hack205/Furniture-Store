@@ -61,6 +61,7 @@ return [
         'customer'  => 'Cliente',
         'agent'     => 'Agente',
         'route'     => 'Ruta',
+        'payment_conditions' => 'Condiciones de Pago',
         'notes'     => 'Notas',
         'print'     => 'Imprimir',
         'print_payments'     => 'Imprimir pagos',
@@ -75,10 +76,14 @@ return [
 
         'created_at' => 'Creado',
         'update_at'  => 'Última actualización',
-        'archived_at'=> 'Archivado',
-        'not_archived' => 'No archivado',
+        'archived_at'=> 'Archivadas',
+        'not_archived' => 'No archivadas',
         'file' => 'Archivar',
         'unarchive' => 'Desarchivar',
+        'all' => 'Todas las Ordenes',
+        'paid_orders' => 'Ordenes Pagadas',
+        'filed_successfully' => 'Orden archivada exitosamente.',
+        'successfully_unarchived' => 'Orden desarchivada exitosamente.',
 
         // Status Enum
         'pending'   => 'Pendiente',

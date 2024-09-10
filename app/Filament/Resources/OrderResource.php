@@ -62,7 +62,7 @@ class OrderResource extends Resource
                                     ->required()
                                     ->label(__('messages.order.route')),
                                 Forms\Components\TextInput::make('payment_conditions')
-                                    ->label(__('Condiciones de Pago'))
+                                    ->label(__('messages.order.payment_conditions'))
                                     ->columnSpanFull(),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
@@ -153,7 +153,7 @@ class OrderResource extends Resource
                     ]),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creado')
+                    ->label(__('messages.order.creado'))
                     ->sortable()
                     ->date(),
             ])
@@ -161,10 +161,10 @@ class OrderResource extends Resource
                 Tables\Filters\SelectFilter::make('settled_status')
                     ->label('Order Status')
                     ->options([
-                        'all' => 'Todas las Ordenes',
-                        'archived' => 'Archivadas',
-                        'notarchived' => 'No archivadas',
-                        'settled' => 'Ordenes Pagadas',
+                        'all' => __('messages.order.all'),
+                        'archived' => __('messages.order.archived_at'),
+                        'notarchived' => __('messages.order.not_archived'),
+                        'settled' => __('messages.order.paid_orders'),
                     ])
                     ->default('notarchived')
                     ->query(function ($query, $state) {
@@ -206,7 +206,7 @@ class OrderResource extends Resource
                         $record->update(['archived_at' => now()]);
 
                         Notification::make()
-                            ->title(__('Orden archivada exitosamente.'))
+                            ->title(__('messages.orders.status.filed_successfully'))
                             ->success()
                             ->send();
                     })
@@ -221,7 +221,7 @@ class OrderResource extends Resource
                         $record->update(['archived_at' => null]);
 
                         Notification::make()
-                            ->title(__('Orden desarchivada exitosamente.'))
+                            ->title(__('messages.orders.status.successfully_unarchived'))
                             ->success()
                             ->send();
                     })
