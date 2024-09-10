@@ -61,6 +61,7 @@ class ImportOrdersItems extends Command
                     'created_at' => $item['FECHA'],
                     'product' => $item['MERCANCIA'],
                     'route' => $item['norutf'],
+                    'payment_conditions' =>$item['CONDPAGO']
                 ]);
 
 

@@ -10,6 +10,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -60,6 +61,9 @@ class OrderResource extends Resource
                                 Forms\Components\TextInput::make('route')
                                     ->required()
                                     ->label(__('messages.order.route')),
+                                Forms\Components\TextInput::make('payment_conditions')
+                                    ->label(__('messages.order.payment_conditions'))
+                                    ->columnSpanFull(),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
                                     ->columnSpanFull(),
@@ -149,7 +153,7 @@ class OrderResource extends Resource
                     ]),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creado')
+                    ->label(__('messages.order.creado'))
                     ->sortable()
                     ->date(),
             ])
@@ -157,10 +161,12 @@ class OrderResource extends Resource
                 Tables\Filters\SelectFilter::make('settled_status')
                     ->label('Order Status')
                     ->options([
-                        'all' => 'All Orders',
-                        'settled' => 'Paid Orders',
-                        'unsettled' => 'Unsettled Orders',
+                        'all' => __('messages.order.all'),
+                        'archived' => __('messages.order.archived_at'),
+                        'notarchived' => __('messages.order.not_archived'),
+                        'settled' => __('messages.order.paid_orders'),
                     ])
+                    ->default('notarchived')
                     ->query(function ($query, $state) {
                         $status = $state['value'];
                         if ($status === 'settled') {
@@ -168,6 +174,11 @@ class OrderResource extends Resource
                             } elseif ($status === 'unsettled') {
                             return $query->whereRaw('(SELECT SUM(amount) FROM payments WHERE payments.order_id = orders.id) < orders.total');
                             }
+                        else if($status === 'archived'){
+                            $query->whereNotNull('archived_at');
+                        }else if($status === 'notarchived'){
+                            $query->whereNull('archived_at');
+                        }
                         return $query;
                         }),
                 Tables\Filters\Filter::make('created_at')
@@ -188,12 +199,34 @@ class OrderResource extends Resource
                         })
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    //TODO CUSTOM O ALGO ASÍ ARCHIVAR
-                ]),
+                Tables\Actions\Action::make('file')
+                    ->label(__('messages.order.file'))
+                    ->icon('heroicon-o-archive-box')
+                    ->action(function (Order $record) {
+                        $record->update(['archived_at' => now()]);
+
+                        Notification::make()
+                            ->title(__('messages.orders.status.filed_successfully'))
+                            ->success()
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->visible(fn(Order $record) => !$record->archived_at),
+
+                Tables\Actions\Action::make('unarchive')
+                    ->label(__('messages.order.unarchive'))
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->action(function (Order $record) {
+                        $record->update(['archived_at' => null]);
+
+                        Notification::make()
+                            ->title(__('messages.orders.status.successfully_unarchived'))
+                            ->success()
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->visible(fn(Order $record) => $record->archived_at !== null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -202,10 +235,11 @@ class OrderResource extends Resource
                 ]),
             ])
             ->groups([
-                'status',
+                //'status',
                 Tables\Grouping\Group::make('customer.name')
                     ->label('Author name')
             ]);
+            
     }
 
     public static function getRelations(): array
