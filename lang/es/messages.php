@@ -63,6 +63,7 @@ return [
         'route'     => 'Ruta',
         'notes'     => 'Notas',
         'print'     => 'Imprimir',
+        'print_payments'     => 'Imprimir pagos',
 
         'product'   => 'Producto',
         'qty'       => 'Cantidad',
@@ -75,6 +76,9 @@ return [
         'created_at' => 'Creado',
         'update_at'  => 'Última actualización',
         'archived_at'=> 'Archivado',
+        'not_archived' => 'No archivado',
+        'file' => 'Archivar',
+        'unarchive' => 'Desarchivar',
 
         // Status Enum
         'pending'   => 'Pendiente',

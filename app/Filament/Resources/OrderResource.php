@@ -10,12 +10,11 @@ use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\PaymentResource\RelationManagers;
-use Filament\Notifications\Notification;
-
 
 class OrderResource extends Resource
     {
@@ -164,10 +163,10 @@ class OrderResource extends Resource
                     ->options([
                         'all' => 'Todas las Ordenes',
                         'archived' => 'Archivadas',
-                        'Notarchived' => 'No archivadas',
+                        'notarchived' => 'No archivadas',
                         'settled' => 'Ordenes Pagadas',
                     ])
-                    ->default('Notarchived')
+                    ->default('notarchived')
                     ->query(function ($query, $state) {
                         $status = $state['value'];
                         if ($status === 'settled') {
@@ -177,7 +176,7 @@ class OrderResource extends Resource
                             }
                         else if($status === 'archived'){
                             $query->whereNotNull('archived_at');
-                        }else if($status === 'Notarchived'){
+                        }else if($status === 'notarchived'){
                             $query->whereNull('archived_at');
                         }
                         return $query;
@@ -200,8 +199,8 @@ class OrderResource extends Resource
                         })
             ])
             ->actions([
-                Tables\Actions\Action::make('archivar')
-                    ->label(__('Archivar'))
+                Tables\Actions\Action::make('file')
+                    ->label(__('messages.order.file'))
                     ->icon('heroicon-o-archive-box')
                     ->action(function (Order $record) {
                         $record->update(['archived_at' => now()]);
@@ -214,8 +213,8 @@ class OrderResource extends Resource
                     ->requiresConfirmation()
                     ->visible(fn(Order $record) => !$record->archived_at),
 
-                Tables\Actions\Action::make('desarchivar')
-                    ->label(__('Desarchivar'))
+                Tables\Actions\Action::make('unarchive')
+                    ->label(__('messages.order.unarchive'))
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->action(function (Order $record) {

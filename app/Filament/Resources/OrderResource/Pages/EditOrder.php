@@ -13,8 +13,8 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('imprimir_pagos')
-                ->label('Imprimir Pagos')
+            Actions\Action::make('print_payments')
+                ->label(__('messages.order.print_payments'))
                 ->button()
                 ->color('gray')
                 ->icon('heroicon-o-printer')
