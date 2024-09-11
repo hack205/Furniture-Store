@@ -10,6 +10,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
@@ -55,7 +56,42 @@ class OrderResource extends Resource
                                     ->relationship('customer', 'name')
                                     ->label(__('messages.order.customer'))
                                     ->searchable()
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->label(__('messages.customer.name'))
+                                    ->required()
+                                    ->maxLength(255),
+                                    Forms\Components\TextInput::make('phone')
+                                    ->label(__('messages.customer.phone'))
+                                    ->maxLength(10),
+                                Forms\Components\TextInput::make('city')
+                                    ->label(__('messages.customer.city'))
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('colony')
+                                    ->label(__('messages.customer.colony'))
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('address')
+                                    ->label(__('messages.customer.address'))
+                                    ->columnSpan('full')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('street_between_1')
+                                    ->label(__('messages.customer.street_1'))
+                                    ->nullable()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('street_between_2')
+                                    ->label(__('messages.customer.street_2'))
+                                    ->nullable()
+                                    ->maxLength(255),
+                                    ])
+                                    ->createOptionAction(fn (Action $action) => $action
+                                    ->modalHeading(__('messages.customer.create_customer'))
+                                    ->modalSubmitActionLabel(__('messages.customer.create_customer'))
+                                    ->modalWidth('lg')
+                                    ),    
                                 Forms\Components\TextInput::make('agent')
                                     ->label(__('messages.order.agent')),
                                 Forms\Components\TextInput::make('route')
