@@ -77,7 +77,6 @@ class ImportOrdersItems extends Command
                         ,
                         [
                             'amount' => $item['ANTICIPO'],
-                            'method' => PaymentProviderEnum::EFECTIVO->value
                         ]
                     );
                 }
