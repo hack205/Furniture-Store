@@ -10,9 +10,7 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'method' => PaymentProviderEnum::class,
-    ];
+    protected $casts = [];
 
     /**
      * Define the relationship between Payment and Order.

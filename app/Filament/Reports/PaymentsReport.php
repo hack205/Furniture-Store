@@ -59,8 +59,6 @@ class PaymentsReport extends Report
                                 Body\TextColumn::make("created_at")
                                     ->label(__('messages.order.created_at'))
                                     ->date(),
-                                Body\TextColumn::make("method")
-                                    ->label(__('messages.payment.method')),
                             ])
                             ->data(
                                 function (?array $filters) {
@@ -87,7 +85,6 @@ class PaymentsReport extends Report
                                             return [
                                                 'created_at' => $row->created_at,
                                                 'amount' => $row->amount,
-                                                'method' => $row->method,
                                                 'reference' => $row->reference,
                                                 'order_number' => $row->order->number,
                                                 'order_id' => $row->order->id,

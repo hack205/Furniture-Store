@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\PaymentResource\RelationManagers;
 
-use App\PaymentProviderEnum;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\RelationManagers\RelationManager;
 
@@ -65,12 +64,6 @@ class PaymentsRelationManager extends RelationManager
                     ->label(__('messages.payment.created_at'))
                     ->default(now())
                     ->required(),
-
-            Forms\Components\ToggleButtons::make('method')
-                    ->label(__('messages.payment.method'))
-                    ->required()
-                    ->inline()
-                    ->options(PaymentProviderEnum::class),
             ]);
 
     }
@@ -80,11 +73,6 @@ class PaymentsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('payment')
             ->columns([
-                Tables\Columns\TextColumn::make('method')
-                    ->label(__('messages.payment.method'))
-                    ->sortable()
-                    ->searchable()
-                    ->badge(),
                 Tables\Columns\TextColumn::make('amount')
                     ->label(__('messages.payment.amount'))
                     ->sortable()

@@ -55,13 +55,11 @@ class ImportPayments extends Command
                         'order_id' => $order->id,
                         'amount' => $value['abono'],
                         'created_at' => $value['fechad'],
-                        'method' => PaymentProviderEnum::EFECTIVO->value
                     ]
                     ,
                     [
                         'amount' => $value['abono'],
                         'created_at' => $value['fechad'],
-                        'method' => PaymentProviderEnum::EFECTIVO->value
                     ]
                 );
                 $status = $payment->wasRecentlyCreated ? 'imported' : 'updated';
