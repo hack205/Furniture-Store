@@ -58,6 +58,14 @@ class CustomerResource extends Resource
                     ->columnSpan('full')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('street_between_1')
+                    ->label(__('messages.customer.street_1'))
+                    ->nullable()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('street_between_2')
+                    ->label(__('messages.customer.street_2'))
+                    ->nullable()
+                    ->maxLength(255),
             ]);
     }
 

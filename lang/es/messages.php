@@ -33,7 +33,6 @@ return [
         'avg_orders_per_customer' => 'Órdenes promedio por cliente',
     ],
 
-
     // Customers
     'customer' => [
         'customer'  => 'cliente',
@@ -41,7 +40,11 @@ return [
         'phone'     => 'Teléfono',
         'city'      => 'Ciudad',
         'colony'    => 'Colonia',
-        'address'   => 'Dirección'
+        'address'   => 'Dirección',
+        'street_1'  => 'Entre calle 1',
+        'street_2'  => 'Entre calle 2',
+
+        'create_customer' => 'Crear cliente',
     ],
 
     // Agents
@@ -51,7 +54,6 @@ return [
         'phone'     => 'Teléfono',
         'created_at' => 'Creado'
     ],
-
 
     // Orders
     'order' => [
@@ -72,7 +74,6 @@ return [
 
         'order_items' => 'Lista de artículos',
         'order_details' => 'Detalle de órden',
-
 
         'created_at' => 'Creado',
         'update_at'  => 'Última actualización',
