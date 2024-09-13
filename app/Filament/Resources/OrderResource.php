@@ -9,7 +9,9 @@ use Filament\Forms\Set;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Carbon; 
 use Filament\Resources\Resource;
+use App\Models\CustomerStatusEnum;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,6 +88,11 @@ class OrderResource extends Resource
                                     ->label(__('messages.customer.street_2'))
                                     ->nullable()
                                     ->maxLength(255),
+                                Forms\Components\Select::make('status')
+                                    ->label(__('messages.customer.status_customer'))
+                                    ->options(CustomerStatusEnum::asSelectArray())
+                                    ->default(CustomerStatusEnum::UNKNOWN->value)
+                                    ->required(),
                                     ])
                                     ->createOptionAction(fn (Action $action) => $action
                                     ->modalHeading(__('messages.customer.create_customer'))
@@ -106,20 +113,16 @@ class OrderResource extends Resource
                             ])
                             ->columns(2)
                             ->columnSpan(['lg' => fn(?Order $record) => $record === null ? 12 : 9]),
-
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('messages.order.created_at'))
                                     ->content(fn(Order $record): ?string => $record->created_at?->diffForHumans()),
-
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('messages.order.update_at'))
                                     ->content(fn(Order $record): ?string => $record->updated_at?->diffForHumans()),
-
                                 Forms\Components\DateTimePicker::make('archived_at')
                                     ->label(__('messages.order.archived_at')),
-
                                 Forms\Components\Actions::make([
                                     Forms\Components\Actions\Action::make('id')
                                         ->icon('heroicon-m-clipboard')
@@ -127,14 +130,12 @@ class OrderResource extends Resource
                                         ->url(fn(?Order $record) => route('print.form', $record->id))
                                         ->openUrlInNewTab()
                                     ]),
-
                             ])
                             ->columnSpan(['lg' => 3])
                             ->hidden(fn(?Order $record) => $record === null),
                     ])
                     ->columns(12)
                     ->columnSpanFull(),
-
                 Forms\Components\Section::make(__('messages.order.product'))
                     ->schema([
                         Forms\Components\TextInput::make('product')
@@ -189,7 +190,7 @@ class OrderResource extends Resource
                     ]),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('messages.order.creado'))
+                    ->label(__('messages.order.created_at'))
                     ->sortable()
                     ->date(),
             ])
@@ -236,34 +237,35 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('file')
-                    ->label(__('messages.order.file'))
-                    ->icon('heroicon-o-archive-box')
-                    ->action(function (Order $record) {
-                        $record->update(['archived_at' => now()]);
-
+                    ->label(fn(Order $record) => $record->archived_at ? __('messages.order.unarchive') : __('messages.order.file_qualify'))
+                    ->form([
+                        Forms\Components\Select::make('customer_status')
+                            ->label(__('messages.customer.rating_customer'))
+                            ->options(CustomerStatusEnum::asSelectArray())
+                            ->required()
+                            ->hidden(fn(Order $record) => $record->archived_at),
+                    ])
+                    ->action(function (Order $record, array $data) {
+                        if ($record->archived_at) {
+                            $record->archived_at = null;
+                        } else {
+                            $record->archived_at = Carbon::now();
+                            $record->customer->update([
+                                'status' => $data['customer_status'],
+                            ]);
+                        }
+                        $record->save();
                         Notification::make()
-                            ->title(__('messages.orders.status.filed_successfully'))
+                            ->title($record->archived_at ? __('messages.order.filed_successfully') : __('messages.order.successfully_unarchived'))
                             ->success()
                             ->send();
                     })
-                    ->requiresConfirmation()
-                    ->visible(fn(Order $record) => !$record->archived_at),
-
-                Tables\Actions\Action::make('unarchive')
-                    ->label(__('messages.order.unarchive'))
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->action(function (Order $record) {
-                        $record->update(['archived_at' => null]);
-
-                        Notification::make()
-                            ->title(__('messages.orders.status.successfully_unarchived'))
-                            ->success()
-                            ->send();
-                    })
-                    ->requiresConfirmation()
-                    ->visible(fn(Order $record) => $record->archived_at !== null),
+                    ->modalHeading(fn(Order $record) => $record->archived_at ? __('messages.order.unarchive') : __('messages.order.file_qualify'))
+                    ->modalSubmitActionLabel(fn(Order $record) => $record->archived_at ? __('messages.order.unarchive') : __('messages.button.save'))
+                    ->modalWidth('lg')
+                    ->color(fn(Order $record) => $record->archived_at ? 'danger' : 'primary'),
             ])
+            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -271,7 +273,6 @@ class OrderResource extends Resource
                 ]),
             ])
             ->groups([
-                //'status',
                 Tables\Grouping\Group::make('customer.name')
                     ->label('Author name')
             ]);

@@ -22,6 +22,12 @@ return [
     'payments' => 'Pagos',
     'customers' => 'Clientes',
 
+    //Buttons
+    
+    'button' => [
+        'save' => 'Guardar'
+    ],
+
     // Dashboard
     'dashboard' => [
         'increase' => 'aumento',
@@ -45,6 +51,13 @@ return [
         'street_2'  => 'Entre calle 2',
 
         'create_customer' => 'Crear cliente',
+
+        'status_customer' => 'Status del cliente',
+        'rating_customer' => 'Calificar al Cliente',
+        'status_unknown'  => 'Desconocido',
+        'status_bad'      => 'Moroso',
+        'status_good'     => 'Bueno',
+        'status_excellent' => 'Excelente' 
     ],
 
     // Agents
@@ -79,13 +92,13 @@ return [
         'update_at'  => 'Última actualización',
         'archived_at'=> 'Archivadas',
         'not_archived' => 'No archivadas',
-        'file' => 'Archivar',
+        'file_qualify' => 'Archivar y Calificar',
         'unarchive' => 'Desarchivar',
         'all' => 'Todas las Ordenes',
         'paid_orders' => 'Ordenes Pagadas',
         'filed_successfully' => 'Orden archivada exitosamente.',
         'successfully_unarchived' => 'Orden desarchivada exitosamente.',
-
+    
         // Status Enum
         'pending'   => 'Pendiente',
         'processing'=> 'Procesando',
