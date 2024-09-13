@@ -8,8 +8,10 @@ use App\Models\Customer;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Models\CustomerStatusEnum;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
+
 
 class CustomerResource extends Resource
 {
@@ -66,6 +68,11 @@ class CustomerResource extends Resource
                     ->label(__('messages.customer.street_2'))
                     ->nullable()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->label(__('messages.customer.status_customer'))
+                    ->options(CustomerStatusEnum::asSelectArray())
+                    ->default(CustomerStatusEnum::UNKNOWN->value)
+                    ->required(),
             ]);
     }
 
@@ -85,6 +92,13 @@ class CustomerResource extends Resource
                     ->label(__('messages.customer.city'))
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label(__('messages.customer.status_customer'))
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => CustomerStatusEnum::from($state)->getLabel())
+                    ->color(fn ($state) => CustomerStatusEnum::from($state)->getColor())
+                    ->icon(fn ($state) => CustomerStatusEnum::from($state)->getIcon()), 
             ])
             ->filters([
                 //
