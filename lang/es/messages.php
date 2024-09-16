@@ -116,7 +116,7 @@ return [
         'payment' => 'Pago',
         'reference' => 'Referencia',
         'amount' => 'Monto',
-        'method' => 'Método de pago',
+        'remaining_balance' => 'Saldo restante',
         'created_at' => 'Creado',
 
         // Payment Types Enum
