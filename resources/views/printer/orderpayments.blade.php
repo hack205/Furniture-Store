@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4"><strong>Ciudad:</strong> {{ $order->customer->city }}</div>
-                <!--<div class="col-md-4"><strong>Entre Calles:</strong> {{ $order->customer->between_streets }}</div> -->
+                <div class="col-md-4"><strong>Entre Calles:</strong> {{ $order->customer->street_between_1}} Y {{ $order->customer->street_between_2}}</div>  
             </div>
         </div>
         <div class="info-section">

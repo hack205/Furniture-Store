@@ -48,12 +48,22 @@ class ImportCustomers extends Command
         foreach ($customers as $key => $value) {
 
             $customer = Customer::firstOrCreate(
-                ['name' => $value['NOMBREC']], // Conditions to check
+                [
+                    // Conditions to check
+                    'name' => $value['NOMBREC'],
+                    'city' => $value['CIUDADC'],
+                    'colony' => $value['COLONIAC'],
+                    'address' => $value['DIRECC'],
+                    'street_between_1' => $value['ENTRE1'],
+                    'street_between_2' => $value['ENTRE2']
+                ], 
                 [
                     'name' => $value['NOMBREC'],
                     'city' => $value['CIUDADC'],
                     'colony' => $value['COLONIAC'],
                     'address' => $value['DIRECC'],
+                    'street_between_1' => $value['ENTRE1'],
+                    'street_between_2' => $value['ENTRE2']
                 ]
             );
             $status = $customer->wasRecentlyCreated ? 'imported' : 'updated';
