@@ -148,6 +148,17 @@ class OrderResource extends Resource
                             ->required()
                             ->prefix('$')
                     ]),
+                Forms\Components\Section::make(__('messages.order.payment_summary'))
+                    ->schema([
+                        Forms\Components\Placeholder::make('total_paid')
+                            ->label(__('messages.order.total_paid'))
+                            ->content(fn(Order $record): string => number_format($record->payments()->sum('amount'), 2)),
+                        Forms\Components\Placeholder::make('total_due')
+                            ->label(__('messages.order.total_due'))
+                            ->content(fn(Order $record): string => number_format($record->total - $record->payments()->sum('amount'), 2)),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 

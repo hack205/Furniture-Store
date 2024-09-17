@@ -99,6 +99,10 @@ return [
         'filed_successfully' => 'Orden archivada exitosamente.',
         'successfully_unarchived' => 'Orden desarchivada exitosamente.',
     
+        'total_paid' => 'Abonado',
+        'total_due'  => 'Restante',
+        'payment_summary' => 'Saldos',
+
         // Status Enum
         'pending'   => 'Pendiente',
         'processing'=> 'Procesando',
@@ -118,11 +122,6 @@ return [
         'amount' => 'Monto',
         'remaining_balance' => 'Saldo restante',
         'created_at' => 'Creado',
-
-        // Payment Types Enum
-        'efectivo'   => 'Efectivo',
-        'transferencia'=> 'Transferencia',
-
     ],
 
     //Reports
