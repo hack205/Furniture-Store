@@ -4,70 +4,44 @@ namespace App\Filament\Pages;
 
 use Filament\Actions;
 use Filament\Pages\Page;
-use Filament\Forms\Form;
 use App\Models\CanvasData;
-use Livewire\Attributes\On;
 use Filament\Notifications\Notification;
 
 class SettingsPage extends Page
 {
     protected static ?string $title = 'Configuración';
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     protected static string $view = 'filament.pages.settings-page';
-
     protected static ?int $navigationSort = 4;
 
     public $canvasData = [];
 
-    public function __construct()
+    public function mount()
     {
-        self::setTitle();
-    }
-
-    public static function setTitle(): void
-    {
-        self::$title = __('messages.settings.settings');
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([]);
+        $canvasData = CanvasData::first();
+        if ($canvasData) {
+            $this->canvasData = $canvasData->data;
+        }
     }
 
     protected function getFormActions(): array
     {
         return [
             Actions\Action::make('update')
-                ->color('primary')
-                ->formId('saveButton')
-                ->label(__('messages.update')),
+                ->label(__('messages.update'))
+                ->action('saveCanvas'),
         ];
     }
 
-
-
-    public function mount()
+    public function saveCanvas()
     {
-        $canvasData = CanvasData::first();
-        if($canvasData){
-            $this->canvasData = $canvasData->data;
-        }
-    }
-
-    //TODO:: update this data!
-    public function update($data)
-    {
-        $canvasData = CanvasData::firstOrNew([
-            'data' => $data
-        ]);
+        $canvasData = CanvasData::firstOrNew([]);
+        $canvasData->data = $this->canvasData;
+        $canvasData->save();
 
         Notification::make()
             ->title(__('messages.settings.updated_successfully'))
             ->success()
             ->send();
     }
-
 }

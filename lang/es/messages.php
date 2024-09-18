@@ -23,6 +23,9 @@ return [
     'customers' => 'Clientes',
     'update' => 'Actualizar',
 
+    // Settings
+    'fontSize' => 'Tamaño de la fuente:',
+
     // Dashboard
     'dashboard' => [
         'increase' => 'aumento',
