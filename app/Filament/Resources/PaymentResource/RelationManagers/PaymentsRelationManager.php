@@ -88,6 +88,7 @@ class PaymentsRelationManager extends RelationManager
                     ->sortable()
                     ->date(),
             ])
+            ->defaultSort('created_at')
             ->filters([
                 //
             ])

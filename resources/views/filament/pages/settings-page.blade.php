@@ -6,7 +6,7 @@
             <input type="range" id="fontSize" name="fontSize" min="9" max="100" value="20">
             <span id="fontSizeValue">9</span>
         </div>
-        <canvas id="myCanvas" width="700" height="529"></canvas>
+        <canvas id="myCanvas" width="900" height="529"></canvas>
         <x-filament-panels::form.actions :actions="$this->getFormActions()"/>
     </x-filament-panels::form>
 
