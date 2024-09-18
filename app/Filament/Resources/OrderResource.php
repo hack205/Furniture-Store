@@ -107,6 +107,12 @@ class OrderResource extends Resource
                                 Forms\Components\TextInput::make('payment_conditions')
                                     ->label(__('messages.order.payment_conditions'))
                                     ->columnSpanFull(),
+                                Forms\Components\Placeholder::make('advance')
+                                    ->label(__('messages.order.advance'))
+                                    ->content(fn(?Order $record): string => number_format(
+                                        $record ? $record->payments()->first()?->amount ?? 0 : 0, 
+                                        2
+                                    )),
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->label(__('messages.order.notes'))
                                     ->columnSpanFull(),
@@ -152,10 +158,14 @@ class OrderResource extends Resource
                     ->schema([
                         Forms\Components\Placeholder::make('total_paid')
                             ->label(__('messages.order.total_paid'))
-                            ->content(fn(Order $record): string => number_format($record->payments()->sum('amount'), 2)),
+                            ->content(fn(?Order $record): string => number_format(
+                                $record ? $record->payments()->sum('amount') : 0, 2
+                            )),
                         Forms\Components\Placeholder::make('total_due')
                             ->label(__('messages.order.total_due'))
-                            ->content(fn(Order $record): string => number_format($record->total - $record->payments()->sum('amount'), 2)),
+                            ->content(fn(?Order $record): string => number_format(
+                                $record ? $record->total - $record->payments()->sum('amount') : 0, 2
+                            )),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
