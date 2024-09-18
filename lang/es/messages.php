@@ -21,6 +21,10 @@ return [
     'orders' => 'Órdenes',
     'payments' => 'Pagos',
     'customers' => 'Clientes',
+    'update' => 'Actualizar',
+
+    // Settings
+    'fontSize' => 'Tamaño de la fuente:',
 
     //Buttons
     
@@ -132,5 +136,10 @@ return [
         'select_date_range' => 'Rango de fechas',
         'search_product' => 'Buscar producto',
         'search_customer' => 'Buscar Cliente',
+    ],
+
+    'settings' => [
+        'settings' => 'Configuración',
+        'updated_successfully' => 'Configuración actualizada exitosamente.',
     ]
 ];
