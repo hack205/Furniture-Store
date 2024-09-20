@@ -29,7 +29,7 @@ class OrdersReport extends Report
                     ->schema([
                         Header\Layout\HeaderColumn::make()
                             ->schema([
-                                Text::make(__('messages.name_shop'))
+                                Text::make(__('messages.shop'))
                                     ->title()
                                     ->primary(),
                                 Text::make(__('messages.reports.report'))
