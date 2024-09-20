@@ -25,7 +25,8 @@ return [
 
     // Settings
     'fontSize' => 'Tamaño de la fuente:',
-
+    'name_shop' => 'Distribuidora Guerrero',
+    
     //Buttons
     
     'button' => [

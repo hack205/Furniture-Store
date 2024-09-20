@@ -26,7 +26,7 @@ class PaymentsReport extends Report
                     ->schema([
                         Header\Layout\HeaderColumn::make()
                             ->schema([
-                                Text::make(__('messages.shop'))
+                                Text::make(__('messages.name_shop'))
                                     ->title()
                                     ->primary(),
                                 Text::make(__('messages.reports.report'))
