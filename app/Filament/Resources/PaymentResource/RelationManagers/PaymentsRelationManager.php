@@ -114,7 +114,10 @@ class PaymentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->after(function ($record) {
+                        $this->redirect(request()->header('Referer'));
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
