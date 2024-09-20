@@ -86,36 +86,36 @@
 
             savedData.forEach(field => createText(field.x, field.y, field.content, field.fontSize));
         } else {
-            createText(249.16, 142.2, 'No copia', 9);
-            createText(588.48, 144.2, 'No original', 9);
-            createText(207.9, 166.32, 'A copia', 9);
-            createText(540.1, 166.32, 'A original', 9);
-            createText(245.7, 166.32, 'De copia', 9);
-            createText(586.3, 166.32, 'De original', 9);
-            createText(289.5, 166.32, 'Del copia', 9);
-            createText(637.12, 166.32, 'Del original', 9);
-            createText(453.6, 196.56, 'Nombre copia', 9);
-            createText(113.4, 196.56, 'Nombre original', 9);
-            createText(453.6, 211.68, 'Dirección copia', 9);
-            createText(113.4, 211.68, 'Dirección original', 9);
-            createText(452.6, 233.36, 'Entre copia', 9);
-            createText(114.4, 233.36, 'Entre original', 9);
-            createText(586.6, 233.36, 'Y copia', 9);
-            createText(223.4, 236.36, 'Y original', 9);
-            createText(453.6, 253.36, 'Colonia copia', 9);
-            createText(113.4, 253.36, 'Colonia original', 9);
-            createText(453.6, 273.36, 'Ciudad copia', 9);
-            createText(113.4, 273.36, 'Ciudad original', 9);
-            createText(453.6, 293.36, 'Mercancia copia', 9);
-            createText(113.4, 293.36, 'Mercancia original', 9);
-            createText(450.6, 364.36, 'Condiciones de pago copia', 9);
-            createText(111.4, 367.36, 'Condiciones de pago original', 9);
-            createText(616.6, 347.36, 'Total copia', 9);
-            createText(299.4, 346.36, 'Total original', 9);
-            createText(299, 368.36, 'Anticipo original', 9);
-            createText(615.6, 366.36, 'Anticipo copia', 9);
-            createText(300, 387.36, 'Saldo original', 9);
-            createText(615.6, 382.36, 'Saldo copia', 9);
+            createText(353.15999999999997, 156.2, 'No copia', 9);
+            createText(689.48, 157.2, 'No original', 9);
+            createText(265.9, 170.32, 'A copia', 9);
+            createText(609.1, 171.32, 'A original', 9);
+            createText(306.7, 170.32, 'De copia', 9);
+            createText(651.3, 171.32, 'De original', 9);
+            createText(357.5, 170.32, 'Del copia', 9);
+            createText(699.12, 171.32, 'Del original', 9);
+            createText(473.6, 198.56, 'Nombre copia', 9);
+            createText(131.4, 196.56, 'Nombre original', 9);
+            createText(473.6, 213.68, 'Dirección copia', 9);
+            createText(129.4, 211.68, 'Dirección original', 9);
+            createText(465.6, 233.36, 'Entre copia', 9);
+            createText(130.4, 232.36, 'Entre original', 9);
+            createText(625.6, 236.36, 'Y copia', 9);
+            createText(281.4, 234.36, 'Y original', 9);
+            createText(471.6, 253.36, 'Colonia copia', 9);
+            createText(130.4, 249.36, 'Colonia original', 9);
+            createText(471.6, 269.36, 'Ciudad copia', 9);
+            createText(137.4, 269.36, 'Ciudad original', 9);
+            createText(478.6, 286.36, 'Mercancia copia', 9);
+            createText(134.4, 286.36, 'Mercancia original', 9);
+            createText(451.6, 331.36, 'Condiciones de pago copia', 9);
+            createText(111.4, 329.36, 'Condiciones de pago original', 9);
+            createText(668.6, 320.36, 'Total copia', 9);
+            createText(314.4, 318.36, 'Total original', 9);
+            createText(319, 334.36, 'Anticipo original', 9);
+            createText(667.6, 335.36, 'Anticipo copia', 9);
+            createText(313, 350.36, 'Saldo original', 9);
+            createText(668.6, 351.36, 'Saldo copia', 9);
         }
 
         canvas.addEventListener('mousedown', function(e) {

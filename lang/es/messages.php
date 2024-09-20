@@ -25,7 +25,7 @@ return [
 
     // Settings
     'fontSize' => 'Tamaño de la fuente:',
-
+    
     //Buttons
     
     'button' => [
