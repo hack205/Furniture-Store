@@ -106,6 +106,7 @@ return [
         'total_paid' => 'Abonado',
         'total_due'  => 'Restante',
         'payment_summary' => 'Saldos',
+        'advance' => 'Anticipo',
 
         // Status Enum
         'pending'   => 'Pendiente',
