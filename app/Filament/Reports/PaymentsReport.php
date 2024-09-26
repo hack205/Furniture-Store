@@ -18,6 +18,8 @@ class PaymentsReport extends Report
     protected static ?string $model = Payment::class;
     protected static ?string $navigationLabel = 'Reporte de Pagos';
 
+    public ?float $totalPayments = 0;
+
     public function header(Header $header): Header
     {
         return $header
@@ -49,16 +51,12 @@ class PaymentsReport extends Report
                             ->primary(),
                         Body\Table::make()
                             ->columns([
-                                Body\TextColumn::make("customer_name")
-                                    ->label(__('messages.customer.customer')),
-                                Body\TextColumn::make("number")
-                                    ->label(__('messages.order.order')),
-                                Body\TextColumn::make("amount")
-                                    ->label(__('messages.payment.amount'))
-                                    ->money('MXN'),
                                 Body\TextColumn::make("created_at")
                                     ->label(__('messages.order.created_at'))
                                     ->date(),
+                                Body\TextColumn::make("amount")
+                                    ->label(__('messages.payment.amount'))
+                                    ->money('MXN'),
                             ])
                             ->data(
                                 function (?array $filters) {
@@ -92,6 +90,7 @@ class PaymentsReport extends Report
                                                 'customer_name' => $row->order->customer->name,
                                             ];
                                         });
+                                    $this->totalPayments = $query->sum('amount');
 
                                     return $query;
                                 }
@@ -106,7 +105,9 @@ class PaymentsReport extends Report
     {
         return $footer
             ->schema([
-                // ...
+                Text::make('Total de Pagos: ' . number_format($this->totalPayments, 2) . ' MXN')
+                    ->fontBold()
+                    ->primary(),
             ]);
     }
 
@@ -128,4 +129,3 @@ class PaymentsReport extends Report
             ]);
     }
 }
-
