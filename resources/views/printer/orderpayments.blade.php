@@ -99,20 +99,20 @@
 
         <div class="row totals">
             @php
-                $pagosOrdenados = $order->payments->sortByDesc('created_at');
+                $orderPayments = $order->payments->sortByDesc('created_at');
                 
-                $primerPago = $pagosOrdenados->first();
+                $firstPayment = $orderPayments->first();
 
-                $adelanto = $primerPago ? $primerPago->amount : 0;
+                $advancement = $firstPayment ? $firstPayment->amount : 0;
                 
-                $totalPayments = $pagosOrdenados->sum('amount');
+                $totalPayments = $orderPayments->sum('amount');
                 
-                $restante = $order->total - $totalPayments;
+                $remaining = $order->total - $totalPayments;
             @endphp
 
             <div class="col-md-4"><strong>Total:</strong> ${{ number_format($order->total, 2) }}</div>
-            <div class="col-md-4"><strong>Anticipo:</strong> ${{ number_format($adelanto, 2) }}</div>
-            <div class="col-md-4"><strong>Saldo Restante:</strong> ${{ number_format($restante, 2) }}</div>
+            <div class="col-md-4"><strong>Anticipo:</strong> ${{ number_format($advancement, 2) }}</div>
+            <div class="col-md-4"><strong>Saldo Restante:</strong> ${{ number_format($remaining, 2) }}</div>
         </div>
 
         <div class="payments-table">
@@ -128,17 +128,17 @@
                 </thead>
                 <tbody>
                     @php
-                        $totalPagos = 0;
+                        $totalPayments = 0;
                     @endphp
-                    @foreach($pagosOrdenados as $payment)
+                    @foreach($orderPayments as $payment)
                         @php
-                            $totalPagos += $payment->amount;
-                            $restante = $order->total - $totalPagos; 
+                            $totalPayments += $payment->amount;
+                            $remaining = $order->total - $totalPayments; 
                         @endphp
                         <tr>
                             <td>{{ \Carbon\Carbon::parse($payment->created_at)->format('d/m/Y') }}</td>
                             <td>${{ number_format($payment->amount, 2) }}</td>
-                            <td>${{ number_format($restante, 2) }}</td>
+                            <td>${{ number_format($remaining, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
