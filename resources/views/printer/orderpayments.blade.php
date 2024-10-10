@@ -99,11 +99,13 @@
 
         <div class="row totals">
             @php
-                $primerPago = $order->payments->first();
+                $pagosOrdenados = $order->payments->sortByDesc('created_at');
+                
+                $primerPago = $pagosOrdenados->first();
 
                 $adelanto = $primerPago ? $primerPago->amount : 0;
                 
-                $totalPayments = $order->payments->sum('amount');
+                $totalPayments = $pagosOrdenados->sum('amount');
                 
                 $restante = $order->total - $totalPayments;
             @endphp
@@ -128,7 +130,7 @@
                     @php
                         $totalPagos = 0;
                     @endphp
-                    @foreach($order->payments as $payment)
+                    @foreach($pagosOrdenados as $payment)
                         @php
                             $totalPagos += $payment->amount;
                             $restante = $order->total - $totalPagos; 
