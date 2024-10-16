@@ -77,7 +77,10 @@ class PaymentsReport extends Report
                                                 $query->where('number', 'like', "%{$order}%");
                                             });
                                         })
-                                        ->take(100)
+                                        ->orderBy('created_at', 'asc')
+                                        ->when(!$from && !$to, function ($query) {
+                                            return $query->take(100);
+                                        })
                                         ->get()
                                         ->map(function ($row){
                                             return [
