@@ -63,7 +63,13 @@ class PaymentsReport extends Report
                                     $search = $filters['search'] ?? null;
                                     $order = $filters['order'] ?? null;
                                     [$from, $to] = Dates::getCarbonInstancesFromDateString($filters['created_at'] ?? null);
-
+    
+                                    if ($from && $to && $from->isSameMonth($to)) {
+                                        $groupByDay = true;
+                                    } else {
+                                        $groupByDay = false;
+                                    }
+    
                                     $query = Payment::with('order')
                                         ->when($from, fn($query) => $query->whereDate('created_at', '>=', $from))
                                         ->when($to, fn($query) => $query->whereDate('created_at', '<=', $to))
@@ -76,13 +82,28 @@ class PaymentsReport extends Report
                                             $query->whereHas('order', function ($query) use ($order) {
                                                 $query->where('number', 'like', "%{$order}%");
                                             });
-                                        })
-                                        ->orderBy('created_at', 'asc')
-                                        ->when(!$from && !$to, function ($query) {
-                                            return $query->take(100);
-                                        })
-                                        ->get()
-                                        ->map(function ($row){
+                                        });
+    
+                                    if ($groupByDay) {
+                                        $query->selectRaw('DATE(created_at) as day, SUM(amount) as total_amount')
+                                            ->groupBy('day')
+                                            ->orderBy('day', 'asc');
+                                    } else {
+                                        $query->orderBy('created_at', 'asc')
+                                            ->when(!$from && !$to, function ($query) {
+                                                return $query->take(100);
+                                            });
+                                    }
+    
+                                    $results = $query->get();
+    
+                                    $mappedResults = $results->map(function ($row) use ($groupByDay) {
+                                        if ($groupByDay) {
+                                            return [
+                                                'created_at' => $row->day,
+                                                'amount' => $row->total_amount,
+                                            ];
+                                        } else {
                                             return [
                                                 'created_at' => $row->created_at,
                                                 'amount' => $row->amount,
@@ -92,17 +113,23 @@ class PaymentsReport extends Report
                                                 'number' => $row->order->number,
                                                 'customer_name' => $row->order->customer->name,
                                             ];
-                                        });
-                                    $this->totalPayments = $query->sum('amount');
-
-                                    return $query;
+                                        }
+                                    });
+    
+                                    if ($groupByDay) {
+                                        $this->totalPayments = $results->sum('total_amount');
+                                    } else {
+                                        $this->totalPayments = $results->sum('amount');
+                                    }
+    
+                                    return $mappedResults;
                                 }
                             ),
                         VerticalSpace::make(),
-
                     ]),
             ]);
     }
+    
 
     public function footer(Footer $footer): Footer
     {
