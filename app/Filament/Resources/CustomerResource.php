@@ -101,7 +101,15 @@ class CustomerResource extends Resource
                     ->icon(fn ($state) => CustomerStatusEnum::from($state)->getIcon()), 
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label(__('messages.customer.status_customer'))
+                    ->options([
+                        CustomerStatusEnum::UNKNOWN->value => __('messages.customer.status_unknown'),
+                        CustomerStatusEnum::BAD->value => __('messages.customer.status_bad'),
+                        CustomerStatusEnum::GOOD->value => __('messages.customer.status_good'),
+                        CustomerStatusEnum::EXCELLENT->value => __('messages.customer.status_excellent'),
+                    ])
+                    ->default(CustomerStatusEnum::UNKNOWN->value),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

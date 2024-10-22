@@ -99,7 +99,7 @@
 
         <div class="row totals">
             @php
-                $orderPayments = $order->payments->sortByDesc('created_at');
+                $orderPayments = $order->payments->sortBy('created_at');
                 
                 $firstPayment = $orderPayments->first();
 
