@@ -10,10 +10,15 @@ class Order extends Model
     use HasFactory;
 
     protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     protected $dates = [
         'archived_at'
+    ];
+
+    protected $fillable = [
+        'created_at',
     ];
 
 

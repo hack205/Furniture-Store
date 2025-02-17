@@ -9,7 +9,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Support\Carbon; 
+use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use App\Models\CustomerStatusEnum;
 use Filament\Forms\Components\Actions\Action;
@@ -54,6 +54,16 @@ class OrderResource extends Resource
                                     ->label(__('messages.order.number'))
                                     ->dehydrated()
                                     ->required(),
+                                Forms\Components\DateTimePicker::make('created_at')
+                                    ->label(__('messages.customer.created_at'))
+                                    ->default(now())
+                                    ->required()
+                                    ->afterStateUpdated(function (?Order $order, $state) {
+                                        if($order){
+                                            $order->created_at = $state;
+                                            $order->save();
+                                        }
+                                    }),
                                 Forms\Components\Select::make('customer_id')
                                     ->relationship('customer', 'name')
                                     ->label(__('messages.order.customer'))
@@ -98,7 +108,7 @@ class OrderResource extends Resource
                                     ->modalHeading(__('messages.customer.create_customer'))
                                     ->modalSubmitActionLabel(__('messages.customer.create_customer'))
                                     ->modalWidth('lg')
-                                    ),    
+                                    ),
                                 Forms\Components\TextInput::make('agent')
                                     ->label(__('messages.order.agent')),
                                 Forms\Components\TextInput::make('route')
@@ -110,7 +120,7 @@ class OrderResource extends Resource
                                 Forms\Components\Placeholder::make('advance')
                                     ->label(__('messages.order.advance'))
                                     ->content(fn(?Order $record): string => number_format(
-                                        $record ? $record->payments()->first()?->amount ?? 0 : 0, 
+                                        $record ? $record->payments()->first()?->amount ?? 0 : 0,
                                         2
                                     )),
                                 Forms\Components\MarkdownEditor::make('notes')
@@ -287,7 +297,7 @@ class OrderResource extends Resource
                     ->modalWidth('lg')
                     ->color(fn(Order $record) => $record->archived_at ? 'danger' : 'primary'),
             ])
-            
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -298,7 +308,7 @@ class OrderResource extends Resource
                 Tables\Grouping\Group::make('customer.name')
                     ->label('Author name')
             ]);
-            
+
     }
 
     public static function getRelations(): array
